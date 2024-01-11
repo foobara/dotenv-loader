@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require "foobara/load_dotenv"
 
 RSpec.configure do |config|
