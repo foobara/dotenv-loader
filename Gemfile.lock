@@ -1,3 +1,11 @@
+GIT
+  remote: https://github.com/foobara/rubocop-rules.git
+  revision: bdeaf31cca6539ce1f5e3bdb1674273989ccdb13
+  specs:
+    foobara-rubocop-rules (0.0.1)
+      rubocop
+      rubocop-rspec
+
 PATH
   remote: .
   specs:
@@ -113,6 +121,7 @@ PLATFORMS
 
 DEPENDENCIES
   foobara-load-dotenv!
+  foobara-rubocop-rules!
   guard-rspec
   pry
   pry-byebug

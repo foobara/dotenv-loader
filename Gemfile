@@ -7,6 +7,7 @@ ruby ">= 3.2.0" # probably works with older versions but probably not going to b
 gemspec
 
 # Development dependencies go here
+gem "foobara-rubocop-rules", github: "foobara/rubocop-rules"
 gem "guard-rspec"
 gem "pry"
 gem "pry-byebug"
