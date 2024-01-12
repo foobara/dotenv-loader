@@ -1,3 +1,5 @@
+require "dotenv"
+
 module Foobara
   class LoadDotenv
   end

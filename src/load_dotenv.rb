@@ -12,7 +12,9 @@ module Foobara
 
     def initialize(env:, dir: Dir.pwd)
       unless env
+        # :nocov:
         raise ArgumentError, "env must be provided"
+        # :nocov:
       end
 
       self.env = env.to_s
