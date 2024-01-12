@@ -1,7 +1,7 @@
 require_relative "src/version"
 
 Gem::Specification.new do |spec|
-  spec.name = "foobara-load-dotenv"
+  spec.name = "foobara-dotenv-loader"
   spec.version = Foobara::LoadDotenv::VERSION
   spec.authors = ["Miles Georgi"]
   spec.email = ["azimux@gmail.com"]

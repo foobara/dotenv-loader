@@ -9,7 +9,7 @@ GIT
 PATH
   remote: .
   specs:
-    foobara-load-dotenv (0.1.0)
+    foobara-dotenv-loader (0.1.0)
       dotenv
 
 GEM
@@ -120,7 +120,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
-  foobara-load-dotenv!
+  foobara-dotenv-loader!
   foobara-rubocop-rules!
   guard-rspec
   pry
