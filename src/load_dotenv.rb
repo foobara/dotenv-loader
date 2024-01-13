@@ -67,7 +67,11 @@ module Foobara
     end
 
     def apply_env_files
-      Dotenv.load!(*env_files_to_apply.map(&:file_name))
+      unless env_files_to_apply.empty?
+        Dir.chdir(dir) do
+          Dotenv.load!(*env_files_to_apply.map(&:file_name))
+        end
+      end
     end
   end
 end

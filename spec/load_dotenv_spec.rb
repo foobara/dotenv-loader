@@ -1,13 +1,14 @@
 RSpec.describe Foobara::LoadDotenv do
   let(:dir) { "#{__dir__}/fixtures/test_dotenvs" }
 
-  it "has a version number" do
+  before do
+    ENV["ENV_VAR"] = "env_var"
     expect(Foobara::LoadDotenv::VERSION).to_not be_nil
   end
 
   describe ".run!" do
     before do
-      allow(Dotenv).to receive(:load!).and_return(nil)
+      allow(Dotenv).to receive(:load!).and_call_original
     end
 
     context "when development env" do
@@ -24,6 +25,8 @@ RSpec.describe Foobara::LoadDotenv do
           ".env.development",
           ".env"
         )
+
+        expect(ENV.fetch("ENV_VAR", nil)).to eq("env_var")
       end
 
       context "when no .env files" do
