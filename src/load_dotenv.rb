@@ -58,11 +58,14 @@ module Foobara
       max_envs = env_files_to_apply.map { |env_file| env_file.envs&.length }.compact.max || 0
 
       env_files_to_apply.sort_by! do |env_file|
-        envs_length = env_file.envs&.length || 0
+        envs = env_file.envs || []
+        envs_length = envs.length
 
-        index = max_envs - envs_length + 1
-
-        env_file.is_local ? index : index * (envs_length + 2)
+        [
+          env_file.is_local ? 0 : 1,
+          max_envs - envs_length + 1,
+          envs.sort
+        ]
       end
     end
 
