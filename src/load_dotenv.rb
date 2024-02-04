@@ -10,7 +10,7 @@ module Foobara
 
     attr_accessor :env, :dir, :env_files, :env_files_to_apply
 
-    def initialize(env:, dir: Dir.pwd)
+    def initialize(env: ENV["DOTENV_ENV"] || ENV["FOOBARA_ENV"] || ENV.fetch("development", nil), dir: Dir.pwd)
       unless env
         # :nocov:
         raise ArgumentError, "env must be provided"
