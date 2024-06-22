@@ -8,34 +8,28 @@ Gem::Specification.new do |spec|
 
   spec.summary = "Loads .env* files in a certain desirable order."
   spec.homepage = "https://github.com/foobara/load-dotenv"
-  spec.license = "MIT"
-  # probably works with older versions but might not test that unless needed
-  spec.required_ruby_version = ">= 3.2.0"
+
+  # Equivalent to SPDX License Expression: Apache-2.0 OR MIT
+  spec.license = "Apache-2.0 OR MIT"
+  spec.licenses = ["Apache-2.0", "MIT"]
+
+  spec.required_ruby_version = ">= #{File.read("#{__dir__}/.ruby-version")}"
 
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = spec.homepage
   spec.metadata["changelog_uri"] = "#{spec.homepage}/blob/main/CHANGELOG.md"
 
-  spec.files = Dir.chdir(__dir__) do
-    `git ls-files -z`.split("\x0").reject do |f|
-      (File.expand_path(f) == __FILE__) ||
-        f.start_with?(*%w[
-                        bin/
-                        spec/
-                        Gemfile
-                        Gemfile.lock
-                        .git
-                        .github
-                        .gitignore
-                        Rakefile
-                        README.md
-                        .rspec
-                        .rubocop.yml
-                      ])
-    end
-  end
+  spec.add_dependency "dotenv"
+
+  spec.files = Dir[
+    "lib/**/*",
+    "src/**/*",
+    "LICENSE*.txt",
+    "README.md",
+    "CHANGELOG.md"
+  ]
+
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "dotenv"
   spec.metadata["rubygems_mfa_required"] = "true"
 end

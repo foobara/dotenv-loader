@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    foobara-dotenv-loader (0.1.0)
+    foobara-dotenv-loader (0.0.1)
       dotenv
 
 GEM
