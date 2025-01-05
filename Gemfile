@@ -1,7 +1,9 @@
-source "https://rubygems.org"
-ruby File.read("#{__dir__}/.ruby-version")
+require_relative "version"
 
-# Specify your gem's dependencies in foobara-load_dotenv.gemspec
+source "https://rubygems.org"
+
+ruby Foobara::LoadDotenv::MINIMUM_RUBY_VERSION
+
 gemspec
 
 # Development dependencies go here
