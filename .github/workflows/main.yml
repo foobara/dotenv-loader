@@ -10,13 +10,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: Ruby ${{ matrix.ruby }}
+    name: Rspec and Rubocop
     timeout-minutes: 3
-    strategy:
-      matrix:
-        ruby:
-          - '3.2.2'
-
     steps:
       - uses: actions/checkout@v3
       - name: Set up Ruby
