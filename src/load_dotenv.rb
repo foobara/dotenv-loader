@@ -13,9 +13,9 @@ module Foobara
     # Might be nice if we could grab the directory of the calling code instead of using Dir.pwd but not sure
     def initialize(env: ENV["DOTENV_ENV"] || ENV["FOOBARA_ENV"] || "development", dir: Dir.pwd)
       unless env
-        # :nocov:
+        # simplecov:disable
         raise ArgumentError, "env must be provided"
-        # :nocov:
+        # simplecov:enable
       end
 
       self.env = env.to_s
