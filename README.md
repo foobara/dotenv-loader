@@ -1,43 +1,81 @@
 # Foobara::LoadDotenv
 
-TODO: Delete this and the text below, and describe your gem
-
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library
-into a gem. Put your Ruby code in the file `lib/foobara/load_dotenv`. To experiment with that code, run `bin/console`
-for an interactive prompt.
+`foobara-dotenv-loader` is a gem which provides `Foobara::LoadDotenv`, a loader that picks the right `.env` files for your environment and loads them in a consistent, conventional order.
 
 ## Installation
 
-TODO: Replace `UPDATE_WITH_YOUR_GEM_NAME_PRIOR_TO_RELEASE_TO_RUBYGEMS_ORG` with your gem name right after releasing it
-to RubyGems.org. Please do not do it earlier due to security reasons. Alternatively, replace this section with
-instructions to install your gem from git if you don't plan to release to RubyGems.org.
-
-Install the gem and add to the application's Gemfile by executing:
-
-    $ bundle add UPDATE_WITH_YOUR_GEM_NAME_PRIOR_TO_RELEASE_TO_RUBYGEMS_ORG
-
-If bundler is not being used to manage dependencies, install the gem by executing:
-
-    $ gem install UPDATE_WITH_YOUR_GEM_NAME_PRIOR_TO_RELEASE_TO_RUBYGEMS_ORG
+Add `gem "foobara-dotenv-loader"` to your Gemfile or .gemspec file and `bundle install`. Or even just `gem install foobara-dotenv-loader` if just playing with it directly in the scripts.
 
 ## Usage
 
-TODO: Write usage instructions here
+Running the loader with explicit arguments:
 
-## Development
+```ruby
+Foobara::LoadDotenv.run!(env: "test", dir: Dir.pwd)
+```
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can
-also run `bin/console` for an interactive prompt that will allow you to experiment.
+Here `env: "test"` picks the `test` environment, and `dir: Dir.pwd` picks the folder which in this case is the current working directory.
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the
-version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version,
-push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+When the loader is run without any arguments, as in the code below, it uses default values to decide which environment to use. It checks the `DOTENV_ENV` environment variable first, then `FOOBARA_ENV` next, and if neither of these is set, the loader will use `development` as the default environment.
+
+```ruby
+require "foobara/load_dotenv"
+
+Foobara::LoadDotenv.run!
+```
+
+NOTE: The gem overwrites any environment variables already set in your terminal or system when it loads the matching `.env` files.
+
+### Which files load and in what order
+
+File names and the environments they load in:
+
+- `.env` is loaded in all environments.
+- `.env.development` is only loaded if `env` is `"development"`.
+- `.env.development.test` is only loaded if `env` is `"development"` or `"test"`.
+
+The same pattern applies if you add more environment names to a file name.
+
+You can append `.local` to the file if it contains local overrides not meant to be checked into source control.
+
+Be sure to add something like:
+
+```gitignore
+**/.env.*.local
+**/.env.local
+```
+
+to your `.gitignore` if using git to honor this.
+
+### The order they load in
+
+- Values in `.local` files have a higher precedent than values in non-local files. This lets them override the values in others.
+- Values in environment-specific files like `.env.development` have a higher precedent than those in `.env`.
+
+Below is the order the project's tests check, from highest precedence to lowest:
+
+1. `.env.development.test.local`
+2. `.env.development.local`
+3. `.env.local`
+4. `.env.development.test`
+5. `.env.development`
+6. `.env`
+
+So the most specific, most local file is first, and then the plain shared `.env` is last.
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/foobara-load_dotenv.
+Bug reports and pull requests are welcome at [foobara/load-dotenv](https://github.com/foobara/load-dotenv).
+
+To work on an existing issue or submit a Pull Request:
+
+1. Fork the repository and clone it to your local machine
+2. Run `bundle install` to install dependencies
+3. Run `rake` to ensure that everything works as expected before making any changes.
+4. Implement your changes
+5. Re-run `rake` to make sure that all tests and rubocop pass
+6. Commit your changes, push to GitHub and open a Pull Request for review
 
 ## License
 
-This project is licensed under your choice of the Apache-2.0 license or the MIT license.
-See [LICENSE.txt](LICENSE.txt) for more info about licensing.
+This project is licensed under the MPL-2.0 license. Please see [LICENSE.txt](LICENSE.text) for more information.
