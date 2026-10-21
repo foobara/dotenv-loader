@@ -1,6 +1,7 @@
 # Foobara::LoadDotenv
 
-`foobara-dotenv-loader` is a gem which provides `Foobara::LoadDotenv`, a loader that picks the right `.env` files for your environment and loads them in a consistent, conventional order.
+A dotenv loader that picks the right `.env*` files for your environment and
+loads them in a consistent, conventional order.
 
 ## Installation
 
@@ -8,23 +9,18 @@ Add `gem "foobara-dotenv-loader"` to your Gemfile or .gemspec file and `bundle i
 
 ## Usage
 
-Running the loader with explicit arguments:
-
-```ruby
-Foobara::LoadDotenv.run!(env: "test", dir: Dir.pwd)
-```
-
-Here `env: "test"` picks the `test` environment, and `dir: Dir.pwd` picks the folder which in this case is the current working directory.
-
-When the loader is run without any arguments, as in the code below, it uses default values to decide which environment to use. It checks the `DOTENV_ENV` environment variable first, then `FOOBARA_ENV` next, and if neither of these is set, the loader will use `development` as the default environment.
-
 ```ruby
 require "foobara/load_dotenv"
 
-Foobara::LoadDotenv.run!
+Foobara::LoadDotenv.run!(env: "test", dir: "/some/directory")
 ```
 
-NOTE: The gem overwrites any environment variables already set in your terminal or system when it loads the matching `.env` files.
+Here `env: "test"` sets the environment to load to `"test"` and
+`dir: "/some/directory"` tells LoadDotenv to find dotenv files in the `/some/directory` directory.
+
+If you omit the `env:` input, it will default to `ENV["DOTENV_ENV"]` then `ENV["FOOBARA_ENV"]` then `"development"`.
+
+If you omit `dir:` it will use the current working directory.
 
 ### Which files load and in what order
 
@@ -45,11 +41,11 @@ Be sure to add something like:
 **/.env.local
 ```
 
-to your `.gitignore` if using git to honor this.
+to your `.gitignore` if using git.
 
 ### The order they load in
 
-- Values in `.local` files have a higher precedent than values in non-local files. This lets them override the values in others.
+- Values in `.env*.local` files have a higher precedent than values in non-local files. This lets them override the values in others.
 - Values in environment-specific files like `.env.development` have a higher precedent than those in `.env`.
 
 Below is the order the project's tests check, from highest precedence to lowest:
@@ -62,6 +58,8 @@ Below is the order the project's tests check, from highest precedence to lowest:
 6. `.env`
 
 So the most specific, most local file is first, and then the plain shared `.env` is last.
+
+NOTE: This gem overrides any environment variables with matching names from your environment.
 
 ## Contributing
 
